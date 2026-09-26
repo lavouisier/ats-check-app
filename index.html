@@ -400,15 +400,9 @@
     </div>
 
     <script>
-        // GÜVENLİK UYARISI: Gerçek bir canlı (production) ortamda API anahtarınızı ASLA buraya yazmayın!
-        // Kötü niyetli kullanıcılar tarayıcı kaynak kodundan bu anahtarı çalabilir.
-        // Doğru Mimari: Sitenizi Netlify/Vercel gibi bir yere yüklediğinizde, "Serverless Functions (Sunucusuz Fonksiyonlar)"
-        // veya basit bir backend kurarak (Node.js/Python), istekleri o sunucu üzerinden geçirip API anahtarınızı orada (ortam değişkeni olarak) saklamalısınız.
-        // SADECE GELİŞTİRME (LOCAL) ORTAMI İÇİN AŞAĞIYA KEY'İNİZİ GİREBİLİRSİNİZ.
-        const apiKey = ""; // <-- Google AI Studio'dan aldığınız key
-        // GÜNCELLENEN ENDPOINT: Gemini 3 Flash Preview
-        const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
+        // ARTIK API KEY BURADA YOK (GÜVENLİK İÇİN)!
+        // İstekler Vercel'deki '/api/analyze' endpoint'ine gidecek.
+        
         // PDF.js Ayarı
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -613,33 +607,26 @@
             `;
 
             try {
-                if(apiKey === "BURAYA_API_ANAHTARINIZ_GELECEK") throw new Error("API_KEY_MISSING");
-
-                const response = await fetch(geminiEndpoint, {
+                // DOĞRUDAN VERCEL ARKA PLANINA İSTEK ATIYORUZ
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { response_mime_type: "application/json" }
-                    })
+                    body: JSON.stringify({ prompt: prompt })
                 });
 
                 if (!response.ok) {
-                    if(response.status === 429) throw new Error("RATE_LIMIT");
-                    if(response.status === 400) throw new Error("BAD_REQUEST");
-                    throw new Error("API_ERROR");
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
                 }
                 
                 const data = await response.json();
                 
-                // Güvenli Yanıt İşleme (Optional Chaining eklendi)
                 let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
                 
                 if (!jsonStr) {
-                     throw new Error("Yapay zeka yanıtı boş döndü (Güvenlik filtresine takılmış veya anlamsız istek atılmış olabilir).");
+                     throw new Error("Yapay zeka yanıtı boş döndü. (Model kısıtlamasına takılmış olabilir)");
                 }
                 
-                // Yapay zeka markdown (```json) ile dönerse metni temizle (Bulletproof JSON parsing)
                 jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
                 
                 const result = JSON.parse(jsonStr);
@@ -650,19 +637,9 @@
             } catch (error) {
                 console.error("Sistem Hatası Detayı:", error);
                 
-                let msg = currentLang === 'tr' ? "Analiz sırasında bir hata oluştu." : "An error occurred.";
+                let msg = currentLang === 'tr' ? "Analiz sırasında bir hata oluştu.\nDetay: " : "An error occurred.\nDetail: ";
+                alert(msg + error.message);
                 
-                if(error.message === "API_KEY_MISSING") {
-                    msg = currentLang === 'tr' ? "Lütfen kaynak kodun en altındaki API Key alanını doldurun." : "Please insert your API Key in the code.";
-                } else if(error.message === "RATE_LIMIT") {
-                    msg = currentLang === 'tr' ? "Çok fazla istek gönderildi. Lütfen 1 dakika bekleyip tekrar deneyin." : "Too many requests. Please wait a minute.";
-                } else if(error.message === "BAD_REQUEST") {
-                    msg = currentLang === 'tr' ? "API anahtarınız geçersiz veya eksik. Lütfen kontrol edin." : "Invalid API key. Please check your code.";
-                } else if(error.name === "SyntaxError") {
-                    msg = currentLang === 'tr' ? "Yapay zeka istenen formatta yanıt veremedi. Lütfen tekrar analiz butonuna basın." : "AI failed to format the response. Please try again.";
-                }
-
-                alert(msg);
                 resetForm();
             }
         }
@@ -779,36 +756,31 @@
             document.getElementById('optimizedResult').classList.add('hidden');
 
             const prompt = currentLang === 'tr' 
-                ? `Adayın CV'sindeki şu cümleyi incele: "${input}". Bunu İK uzmanlarını etkileyecek, "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 farklı güçlü alternatife dönüştür. Lütfen sadece 3 elemanlı bir JSON string dizisi olarak dön: ["Alt 1", "Alt 2", "Alt 3"].`
-                : `Analyze this sentence from a candidate's CV: "${input}". Rewrite it into 3 powerful alternatives using the STAR (Situation, Task, Action, Result) method to impress HR professionals. Please return strictly as a JSON array of 3 strings: ["Alt 1", "Alt 2", "Alt 3"].`;
+                ? `Adayın CV'sindeki şu cümleyi incele: "${input}". Bunu İK uzmanlarını etkileyecek, "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 farklı güçlü alternatife dönüştür. Lütfen sadece 3 elemanlı bir JSON string dizisi olarak dön: ["Alt 1", "Alt 2", "Alt 3"]. (Markdown veya başka metin ekleme)`
+                : `Analyze this sentence from a candidate's CV: "${input}". Rewrite it into 3 powerful alternatives using the STAR (Situation, Task, Action, Result) method to impress HR professionals. Please return strictly as a JSON array of 3 strings: ["Alt 1", "Alt 2", "Alt 3"]. (No markdown, no extra text)`;
 
             try {
-                const response = await fetch(geminiEndpoint, {
+                // SİHİRBAZ İÇİN DE VERCEL API KULLANILIYOR
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { response_mime_type: "application/json" } // JSON formatını zorla
-                    })
+                    body: JSON.stringify({ prompt: prompt })
                 });
 
                 if (!response.ok) {
-                     const errorData = await response.json().catch(() => ({}));
-                     throw new Error(`API Hatası (HTTP ${response.status}): ${errorData.error?.message || 'Bilinmeyen hata'}`);
+                     const errorData = await response.json();
+                     throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
                 }
                 
                 const data = await response.json();
                 
-                // Güvenli Yanıt İşleme (Optional Chaining eklendi)
                 let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
                 
                 if (!jsonStr) {
-                    throw new Error("Yapay zeka yanıtı boş döndü (Güvenlik filtresi veya anlamsız istek olabilir).");
+                    throw new Error("Yapay zeka yanıtı boş döndü.");
                 }
 
-                // Yapay zeka fazladan Markdown (```json ... ```) koyarsa temizle
                 jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
-
                 const resultList = JSON.parse(jsonStr);
                 
                 const resultDiv = document.getElementById('optimizedResult');
@@ -824,7 +796,6 @@
 
             } catch (error) {
                 console.error("Analiz Detaylı Hata:", error);
-                
                 alert((currentLang === 'tr' ? "Analiz sırasında hata: " : "Error during analysis: ") + error.message);
                 btn.innerText = originalText;
                 
