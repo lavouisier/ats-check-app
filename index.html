@@ -40,6 +40,32 @@ boxShadow: {
 }
 </script>
 <style>
+  @media print {
+    /* Yazdırma sırasında gereksiz butonları ve menüyü gizle */
+    .no-print, button, nav {
+        display: none !important;
+    }
+    
+    /* Sayfa yapısını A4'e sabitle ve arka planı temizle */
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    /* Rapor kutusunun sayfaya tam oturmasını sağla */
+    #resultContent {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    /* Yazıların ve kutuların ortadan ikiye kesilmesini engelle */
+    div, section, p, li {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
 body { background-color: #f1f5f9; color: #0f172a; }
 
 /* Glassmorphism Modallar İçin */
