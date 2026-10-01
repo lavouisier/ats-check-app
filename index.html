@@ -1,913 +1,876 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATS CV Check | Premium İK Asistanı</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' },
-                        surface: '#f8fafc'
-                    },
-                    boxShadow: {
-                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
-                        'glow': '0 0 20px rgba(59, 130, 246, 0.5)'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #f1f5f9; color: #0f172a; }
-        
-        /* Glassmorphism Modallar İçin */
-        .glass-modal { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(16px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATS CV Check | Premium İK Asistanı</title>
 
-        /* Dosya Yükleme Alanı */
-        .drop-zone { transition: all 0.2s ease; }
-        .drop-zone:hover, .drop-zone.dragover { border-color: #3b82f6; background-color: #eff6ff; }
-        
-        /* ATS Skor Halkası */
-        .score-circle { width: 140px; height: 140px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-        /* Yazdırma (PDF) Ayarları */
-        @media print {
-            body { background: white; font-family: 'Inter', sans-serif; }
-            .no-print { display: none !important; }
-            .print-full-width { width: 100% !important; max-width: 100% !important; padding: 0 !important; box-shadow: none !important; }
-            .page-break { page-break-before: always; }
-            .bg-white { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
-        }
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-        /* Yükleme Animasyonu */
-        .loader-ring { display: inline-block; position: relative; width: 64px; height: 64px; }
-        .loader-ring div { box-sizing: border-box; display: block; position: absolute; width: 50px; height: 50px; margin: 6px; border: 4px solid #3b82f6; border-radius: 50%; animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; border-color: #3b82f6 transparent transparent transparent; }
-        .loader-ring div:nth-child(1) { animation-delay: -0.45s; }
-        .loader-ring div:nth-child(2) { animation-delay: -0.3s; }
-        .loader-ring div:nth-child(3) { animation-delay: -0.15s; }
-        @keyframes loader-ring { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+<!-- FontAwesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-        /* Yan Menü (Geçmiş) */
-        .sidebar-open { transform: translateX(0%); }
-        .sidebar-closed { transform: translateX(100%); }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Plus Jakarta Sans', 'sans-serif'],
+body: ['Inter', 'sans-serif'],
+},
+colors: {
+brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' },
+surface: '#f8fafc'
+},
+boxShadow: {
+'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+'glow': '0 0 20px rgba(59, 130, 246, 0.5)'
+}
+}
+}
+}
+</script>
+<style>
+body { background-color: #f1f5f9; color: #0f172a; }
+
+/* Glassmorphism Modallar İçin */
+.glass-modal { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(16px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+/* Dosya Yükleme Alanı */
+.drop-zone { transition: all 0.2s ease; }
+.drop-zone:hover, .drop-zone.dragover { border-color: #3b82f6; background-color: #eff6ff; }
+
+/* ATS Skor Halkası */
+.score-circle { width: 140px; height: 140px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+
+/* Yazdırma (PDF) Ayarları */
+@media print {
+body { background: white; font-family: 'Inter', sans-serif; }
+.no-print { display: none !important; }
+.print-full-width { width: 100% !important; max-width: 100% !important; padding: 0 !important; box-shadow: none !important; }
+.page-break { page-break-before: always; }
+.bg-white { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+}
+
+/* Yükleme Animasyonu */
+.loader-ring { display: inline-block; position: relative; width: 64px; height: 64px; }
+.loader-ring div { box-sizing: border-box; display: block; position: absolute; width: 50px; height: 50px; margin: 6px; border: 4px solid #3b82f6; border-radius: 50%; animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; border-color: #3b82f6 transparent transparent transparent; }
+.loader-ring div:nth-child(1) { animation-delay: -0.45s; }
+.loader-ring div:nth-child(2) { animation-delay: -0.3s; }
+.loader-ring div:nth-child(3) { animation-delay: -0.15s; }
+@keyframes loader-ring { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Yan Menü (Geçmiş) */
+.sidebar-open { transform: translateX(0%); }
+.sidebar-closed { transform: translateX(100%); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+</style>
 </head>
 <body class="min-h-screen flex flex-col font-body">
 
-    <!-- Üst Menü -->
 <!-- Üst Menü -->
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 no-print transition-all">
-        <!-- Mobilde px-2 (dar boşluk), Bilgisayarda px-6 (geniş boşluk) -->
-        <div class="max-w-5xl mx-auto px-2 sm:px-6 py-3 flex justify-between items-center">
-            
-            <!-- Sol: Logo Bölümü -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5">
-                <div class="bg-gradient-to-br from-brand-500 to-brand-600 text-white p-1.5 sm:p-2 rounded-lg shadow-sm">
-                    <i class="fa-solid fa-microchip text-xs sm:text-base"></i>
-                </div>
-                <h1 class="text-base sm:text-2xl font-extrabold tracking-tight text-slate-800 font-sans">ATS<span class="text-brand-600">Check</span></h1>
-            </div>
+<nav class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 no-print transition-all">
+<div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+<div class="flex items-center gap-2.5">
+<div class="bg-gradient-to-br from-brand-500 to-brand-600 text-white p-2 rounded-lg shadow-sm">
+<i class="fa-solid fa-microchip"></i>
+</div>
+<h1 class="text-2xl font-extrabold tracking-tight text-slate-800 font-sans">ATS<span class="text-brand-600">Check</span></h1>
+</div>
+<div class="flex items-center gap-3 sm:gap-5">
+<select id="langSelect" class="bg-slate-50 border border-slate-200 text-sm font-medium rounded-lg px-3 py-2 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 cursor-pointer text-slate-700">
+<option value="tr">🇹🇷 TR</option>
+<option value="en">🇬🇧 EN</option>
+</select>
+<button onclick="openModal('howItWorksModal')" class="text-sm font-semibold text-slate-500 hover:text-brand-600 transition hidden sm:block" id="navHow">Nasıl Çalışır?</button>
+<button onclick="toggleHistory()" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> <span id="navHistory">Geçmiş</span>
+</button>
+</div>
+</div>
+</nav>
 
-            <!-- Sağ: Butonlar Bölümü -->
-            <div class="flex items-center gap-1.5 sm:gap-4">
-                
-                <!-- Dil Seçeneği -->
-                <select id="langSelect" class="bg-slate-50 border border-slate-200 text-[10px] sm:text-sm font-medium rounded-lg px-1 sm:px-3 py-1.5 sm:py-2 outline-none cursor-pointer">
-                    <option value="tr">🇹🇷 TR</option>
-                    <option value="en">🇬🇧 EN</option>
-                </select>
-                
-                <!-- Nasıl Çalışır Butonu -->
-                <button onclick="openModal('howItWorksModal')" class="text-[10px] sm:text-sm font-semibold text-slate-600 hover:text-brand-600 transition-colors whitespace-nowrap">
-                    Nasıl Çalışır?
-                </button>
-                
-                <!-- Geçmiş Butonu -->
-                <button onclick="toggleHistory()" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg shadow-sm text-[10px] sm:text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1">
-                    <i class="fa-solid fa-clock-rotate-left text-brand-600"></i>
-                    <span id="navHistory">Geçmiş</span>
-                </button>
-                
-            </div>
-        </div>
-    </nav>
-
-    <!-- Geçmiş Yan Menü -->
-    <div id="historySidebar" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 sidebar-closed transition-transform duration-300 ease-in-out no-print border-l border-slate-200 flex flex-col">
-        <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="font-bold text-slate-800 flex items-center gap-2 font-sans"><i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Geçmiş Analizler</h2>
-            <button onclick="toggleHistory()" class="text-slate-400 hover:text-rose-500 bg-white rounded-md p-1 border border-slate-200 hover:border-rose-200 transition"><i class="fa-solid fa-xmark w-5 h-5 flex items-center justify-center"></i></button>
-        </div>
-        <div id="historyList" class="p-4 flex-1 overflow-y-auto space-y-3 bg-slate-50/50">
-            <!-- Geçmiş JS -->
-        </div>
-    </div>
-
-    <!-- Ana İçerik -->
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-10 sm:py-16 print-full-width">
-        
-        <!-- Hero Section (Girdi Alanı Üstü) -->
-        <div id="heroSection" class="text-center mb-10 no-print">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold uppercase tracking-wider mb-4">
-                <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                </span>
-                Yapay Zeka Destekli
-            </div>
-            <h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 font-sans tracking-tight mb-4" id="titleInput">
-                CV'niz ATS'yi Geçecek Mi?
-            </h2>
-            <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" id="descInput">
-                İK uzmanı algoritmamızla özgeçmişinizi iş ilanıyla eşleştirin. Saniyeler içinde uyumluluk puanınızı ve eksiklerinizi öğrenin.
-            </p>
-        </div>
-
-        <!-- Form Alanı -->
-        <div id="inputSection" class="bg-white rounded-[2rem] shadow-soft p-6 sm:p-10 mb-8 no-print border border-slate-100 relative overflow-hidden">
-            <!-- Dekoratif Arka Plan Işıltısı -->
-            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-brand-50 opacity-50 blur-3xl pointer-events-none"></div>
-
-            <div class="space-y-8 relative z-10">
-                
-                <!-- Adım 1: CV Yükleme -->
-                <div>
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center font-sans">1</div>
-                        <label class="text-lg font-bold text-slate-800 font-sans" id="labelCV">Özgeçmişinizi Yükleyin</label>
-                    </div>
-                    
-                    <!-- Modern Dosya Sürükle Bırak -->
-                    <div class="drop-zone border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center cursor-pointer relative group bg-slate-50/50" id="dropZone">
-                        <input type="file" id="cvFile" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div id="uploadIcon" class="text-brand-500 mb-3 transform group-hover:-translate-y-1 transition duration-300">
-                            <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
-                        </div>
-                        <p id="uploadText" class="font-bold text-slate-700 text-base">PDF dosyanızı buraya sürükleyin veya seçin</p>
-                        <p id="uploadSubText" class="text-sm text-slate-400 mt-1 font-medium">Maksimum 5MB (.pdf)</p>
-                    </div>
-
-                    <!-- Veya Metin Alanı -->
-                    <div class="mt-4">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-grow border-t border-slate-200"></div>
-                            <span class="flex-shrink-0 mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">VEYA METNİ YAPIŞTIRIN</span>
-                            <div class="flex-grow border-t border-slate-200"></div>
-                        </div>
-                        <textarea id="cvText" rows="4" class="w-full border border-slate-200 rounded-xl p-4 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition bg-slate-50 placeholder-slate-400" placeholder="Eğer PDF yükleyemiyorsanız, CV'nizdeki yazıları kopyalayıp buraya yapıştırabilirsiniz..."></textarea>
-                    </div>
-                </div>
-                
-                <!-- Adım 2: İş İlanı -->
-                <div class="pt-2 border-t border-slate-100">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center font-sans">2</div>
-                        <label class="text-lg font-bold text-slate-800 font-sans" id="labelJob">Hedef İş İlanı</label>
-                    </div>
-                    <textarea id="jobText" rows="6" class="w-full border border-slate-200 rounded-xl p-4 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition bg-slate-50 placeholder-slate-400" placeholder="Başvurmak istediğiniz pozisyonun detaylarını (Aranan nitelikler, iş tanımı vb.) buraya yapıştırın. Yapay zeka sizi bu metne göre sınayacaktır..."></textarea>
-                </div>
-
-                <!-- Aksiyon Butonu -->
-                <div class="pt-4">
-                    <button id="analyzeBtn" onclick="startAnalysis()" class="w-full sm:w-auto sm:px-12 bg-slate-900 hover:bg-brand-600 text-white font-bold py-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-brand-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 text-lg font-sans mx-auto">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="btnAnalyzeText">Yapay Zeka ile Analiz Et</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Yükleme Ekranı -->
-        <div id="loadingSection" class="hidden flex-col items-center justify-center py-20 no-print">
-            <div class="loader-ring mb-6"><div></div><div></div><div></div><div></div></div>
-            <h3 class="text-2xl font-bold text-slate-800 font-sans mb-2" id="loadingTitle">Analiz Ediliyor</h3>
-            <p class="text-slate-500" id="loadingText">İK algoritmamız CV'nizi inceliyor, lütfen bekleyin...</p>
-        </div>
-
-        <!-- Sonuç Alanı -->
-        <div id="resultsSection" class="hidden opacity-0 transform translate-y-4 transition-all duration-700 ease-out">
-            
-            <!-- Rapor Aksiyonları -->
-            <div class="flex justify-between items-center mb-6 no-print">
-                <button onclick="resetForm()" class="text-slate-500 hover:text-slate-800 font-semibold text-sm transition flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
-                    <i class="fa-solid fa-arrow-left"></i> Yeni Analiz
-                </button>
-                <button onclick="window.print()" class="bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-download"></i> <span id="btnPrint">Raporu İndir</span>
-                </button>
-            </div>
-
-            <!-- Skor Kartı (Hero) -->
-            <div class="bg-white rounded-3xl shadow-soft border border-slate-100 p-8 sm:p-10 flex flex-col md:flex-row items-center gap-10 mb-8 relative overflow-hidden">
-                <div class="absolute left-0 top-0 w-2 h-full bg-brand-500" id="scoreBar"></div>
-                
-                <div class="flex flex-col items-center relative">
-                    <div id="scoreCircle" class="score-circle bg-slate-100">
-                        <span id="scoreValue" class="z-10 text-slate-800">0</span><span class="text-2xl text-slate-500 z-10 ml-1">%</span>
-                    </div>
-                    <span class="mt-4 text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="resScoreTitle">ATS Uyumu</span>
-                </div>
-                
-                <div class="flex-1 text-center md:text-left">
-                    <div class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold mb-3 uppercase" id="scoreBadge">Analiz Tamamlandı</div>
-                    <h2 class="text-3xl font-extrabold text-slate-900 font-sans mb-3" id="scoreHeading">Sonuçlar Hazır!</h2>
-                    <p class="text-slate-600 text-lg leading-relaxed" id="scoreMessage">Özet mesajı buraya gelecek.</p>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <!-- Güçlü Yönler -->
-                <div class="bg-emerald-50/50 rounded-3xl p-6 sm:p-8 border border-emerald-100">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-xl mb-5 shadow-sm">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                    <h3 class="text-slate-800 font-extrabold font-sans text-xl mb-4" id="resStrengths">Eşleşen Güçlü Yönler</h3>
-                    <ul id="strengthsList" class="space-y-3 text-emerald-900 text-sm font-medium"></ul>
-                </div>
-
-                <!-- Eksikler -->
-                <div class="bg-rose-50/50 rounded-3xl p-6 sm:p-8 border border-rose-100">
-                    <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-xl mb-5 shadow-sm">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
-                    <h3 class="text-slate-800 font-extrabold font-sans text-xl mb-4" id="resMissing">Eksik Anahtar Kelimeler</h3>
-                    <div class="text-xs text-rose-500 mb-3 font-semibold uppercase tracking-wider">İlanın Aradığı Ancak CV'de Olmayanlar:</div>
-                    <div id="missingList" class="flex flex-wrap gap-2"></div>
-                </div>
-            </div>
-
-            <!-- Öneriler -->
-            <div class="bg-brand-50/50 rounded-3xl p-6 sm:p-8 border border-brand-100 mb-8 page-break">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center text-xl shadow-sm">
-                        <i class="fa-regular fa-lightbulb"></i>
-                    </div>
-                    <h3 class="text-slate-800 font-extrabold font-sans text-xl" id="resSuggestions">İK Uzmanı Önerileri</h3>
-                </div>
-                <ul id="suggestionsList" class="space-y-4 text-brand-900 text-sm md:text-base leading-relaxed"></ul>
-            </div>
-
-            <!-- Premium: Mülakat Simülasyonu -->
-            <div class="bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl mb-8 page-break text-white relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="flex items-center gap-4 mb-6 relative z-10">
-                    <div class="w-12 h-12 bg-slate-800 text-amber-400 border border-slate-700 rounded-2xl flex items-center justify-center text-xl shadow-sm">
-                        <i class="fa-solid fa-microphone-lines"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold font-sans text-xl text-white" id="resInterview">Mülakat Simülasyonu</h3>
-                        <span class="text-xs font-bold bg-amber-500 text-slate-900 px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block no-print">Premium Özellik</span>
-                    </div>
-                </div>
-                <p class="text-slate-400 text-sm mb-6 relative z-10" id="resInterviewDesc">Zayıf noktalarınıza göre mülakatta size sorulması en muhtemel zorlayıcı sorular:</p>
-                <div id="interviewQuestions" class="space-y-4 relative z-10"></div>
-            </div>
-
-            <!-- Premium: Ön Yazı (Cover Letter) -->
-            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-soft mb-8 page-break relative group">
-                <div class="flex justify-between items-start sm:items-center mb-6 flex-col sm:flex-row gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-indigo-100">
-                            <i class="fa-solid fa-envelope-open-text"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold font-sans text-xl text-slate-800" id="resCover">Size Özel Ön Yazı</h3>
-                            <span class="text-xs font-bold bg-indigo-600 text-white px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block no-print">Premium Özellik</span>
-                        </div>
-                    </div>
-                    <button onclick="copyText('coverLetterText', this)" class="text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl transition no-print flex items-center gap-2">
-                        <i class="fa-regular fa-copy"></i> Metni Kopyala
-                    </button>
-                </div>
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                    <p id="coverLetterText" class="text-sm sm:text-base text-slate-700 whitespace-pre-wrap leading-loose font-body"></p>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-8 page-break">
-                <!-- LinkedIn Arka Kapı Mesajı -->
-                <div class="bg-sky-50/50 rounded-3xl p-6 border border-sky-100 relative">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center text-lg shadow-sm">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </div>
-                            <h3 class="text-slate-800 font-extrabold font-sans text-lg" id="resLinkedinTitle">LinkedIn İK Mesajı</h3>
-                        </div>
-                        <button onclick="copyText('linkedinMessageText', this)" class="text-xs bg-white border border-sky-200 hover:bg-sky-50 text-sky-700 font-bold px-3 py-1.5 rounded-lg transition no-print flex items-center gap-1">
-                            <i class="fa-regular fa-copy"></i> Al
-                        </button>
-                    </div>
-                    <p class="text-xs text-sky-600 mb-3 font-semibold uppercase tracking-wider" id="resLinkedinDesc">Başvuru sonrası İK uzmanına gönderilecek 50 kelimelik etki mesajı:</p>
-                    <div class="bg-white rounded-xl p-4 border border-sky-100 shadow-sm">
-                        <p id="linkedinMessageText" class="text-sm text-slate-700 whitespace-pre-wrap italic"></p>
-                    </div>
-                </div>
-
-                <!-- Kariyer Pusulası (Alternatif Roller) -->
-                <div class="bg-fuchsia-50/50 rounded-3xl p-6 border border-fuchsia-100 relative">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-lg shadow-sm">
-                            <i class="fa-solid fa-compass"></i>
-                        </div>
-                        <h3 class="text-slate-800 font-extrabold font-sans text-lg" id="resCompassTitle">Kariyer Pusulası</h3>
-                    </div>
-                    <p class="text-xs text-fuchsia-600 mb-4 font-semibold uppercase tracking-wider" id="resCompassDesc">Mevcut yeteneklerinizle başvurabileceğiniz diğer yüksek potansiyelli roller:</p>
-                    <ul id="alternativeRolesList" class="space-y-3">
-                        <!-- Alternatif Roller Buraya Gelecek -->
-                    </ul>
-                </div>
-            </div>
-
-            <!-- AI CV Sihirbazı (Cümle İyileştirici) -->
-            <div class="bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl mb-8 page-break text-white relative overflow-hidden no-print">
-                <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="flex items-center gap-4 mb-6 relative z-10">
-                    <div class="w-12 h-12 bg-slate-800 text-indigo-400 border border-slate-700 rounded-2xl flex items-center justify-center text-xl shadow-sm">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold font-sans text-xl text-white" id="resWizard">AI CV Sihirbazı (Madde İyileştirici)</h3>
-                        <span class="text-xs font-bold bg-indigo-500 text-slate-900 px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block">Mini Araç</span>
-                    </div>
-                </div>
-                <p class="text-slate-400 text-sm mb-6 relative z-10" id="resWizardDesc">CV'nizdeki zayıf veya sıradan bir cümleyi yazın. İK uzmanlarını etkileyecek "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 güçlü alternatife dönüştürelim.</p>
-                
-                <div class="flex flex-col sm:flex-row gap-3 mb-4 relative z-10">
-                    <input type="text" id="weakSentence" class="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-4 text-sm outline-none focus:border-indigo-500 text-slate-200 placeholder-slate-500" placeholder="Örn: Satışları artırdım ve ekibi yönettim.">
-                    <button onclick="optimizeSentence()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-bolt"></i> <span id="btnOptimize">Güçlendir</span>
-                    </button>
-                </div>
-                
-                <div id="optimizedResult" class="class="text-[11px] sm:text-sm text-gray-700 hover:text-gray-900 font-bold whitespace-nowrap mx-1">
-                    <!-- Sonuçlar buraya gelecek -->
-                </div>
-            </div>
-
-            <!-- Kahve Ismarla (Alt CTA) -->
-            <div class="text-center py-10 no-print">
-                <div class="inline-block p-4 rounded-3xl bg-amber-50 border border-amber-100 max-w-lg">
-                    <p class="text-amber-800 mb-4 text-sm font-semibold" id="donateText">Bu analiz işinize yaradıysa, sistemi yaşatmak için geliştiriciye bir kahve ısmarlayabilirsiniz ☕</p>
-                    <button onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-3 px-8 rounded-xl transition shadow-sm inline-flex items-center gap-2 justify-center">
-                        <i class="fa-solid fa-mug-hot"></i> Destek Ol
-                    </button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-auto py-6 no-print">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <p class="text-slate-400 text-sm font-medium">&copy; 2026 ATSCheck. Tüm verileriniz tarayıcınızda işlenir, sunucularda saklanmaz.</p>
-        </div>
-    </footer>
-
-    <!-- Modallar -->
-    <!-- 1. Nasıl Çalışır Modalı -->
-<!-- Nasıl Çalışır Modalı -->
-<div id="howItWorksModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300 relative">
-        
-        <!-- Tek ve Çalışan Çarpı Butonu -->
-        <button onclick="closeModal('howItWorksModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="p-6 sm:p-8">
-            <h3 class="text-xl font-bold text-slate-800 mb-6 pr-8">Sistem Nasıl Çalışır?</h3>
-            
-            <div class="space-y-4 text-sm text-slate-600">
-                <div class="flex gap-3">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">1</span>
-                    <p>PDF formatındaki CV'nizi yükleyin veya içeriğini metin olarak yapıştırın.</p>
-                </div>
-                <div class="flex gap-3">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">2</span>
-                    <p>Başvuracağınız iş ilanının tam metnini kopyalayıp ilgili alana yapıştırın.</p>
-                </div>
-                <div class="flex gap-3">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">3</span>
-                    <p>Yapay zeka her iki metni okur, kurumsal İK algoritmalarını simüle ederek eksiklerinizi raporlar.</p>
-                </div>
-            </div>
-            
-            <div class="mt-8 bg-slate-50 p-5 rounded-xl border border-slate-100 text-center">
-                <h4 class="font-bold text-slate-800 mb-2">Desteğiniz İçin Teşekkürler!</h4>
-                <p class="text-xs text-slate-500 mb-4">Bu aracı ücretsiz ve reklamsız tutabilmek için desteklerinize güveniyoruz.</p>
-                
-                <button onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="w-full bg-[#FFDD00] hover:bg-[#ffea4d] text-gray-900 font-bold py-3 rounded-xl transition shadow-sm mb-3">
-                    ☕ Destek Ol
-                </button>
-                
-                <!-- Çalışan "Belki Daha Sonra" Butonu -->
-                <button onclick="closeModal('howItWorksModal')" class="text-xs text-slate-400 hover:text-slate-600 font-medium cursor-pointer transition-colors block w-full text-center">
-                    Belki Daha Sonra
-                </button>
-            </div>
-        </div>
-    </div>
+<!-- Geçmiş Yan Menü -->
+<div id="historySidebar" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 sidebar-closed transition-transform duration-300 ease-in-out no-print border-l border-slate-200 flex flex-col">
+<div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+<h2 class="font-bold text-slate-800 flex items-center gap-2 font-sans"><i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Geçmiş Analizler</h2>
+<button onclick="toggleHistory()" class="text-slate-400 hover:text-rose-500 bg-white rounded-md p-1 border border-slate-200 hover:border-rose-200 transition"><i class="fa-solid fa-xmark w-5 h-5 flex items-center justify-center"></i></button>
+</div>
+<div id="historyList" class="p-4 flex-1 overflow-y-auto space-y-3 bg-slate-50/50">
+<!-- Geçmiş JS -->
+</div>
 </div>
 
-    <script>
-        // ARTIK API KEY BURADA YOK (GÜVENLİK İÇİN)!
-        // İstekler Vercel'deki '/api/analyze' endpoint'ine gidecek.
-        
-        // PDF.js Ayarı
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+<!-- Ana İçerik -->
+<main class="flex-grow max-w-4xl mx-auto w-full px-4 py-10 sm:py-16 print-full-width">
 
-        let currentLang = 'tr';
-        
-        // Çoklu Dil
-        document.getElementById('langSelect').addEventListener('change', (e) => {
-            currentLang = e.target.value;
-            const t = currentLang === 'tr' ? {
-                heroTitle: "CV'niz ATS'yi Geçecek Mi?",
-                heroDesc: "İK uzmanı algoritmamızla özgeçmişinizi iş ilanıyla eşleştirin. Saniyeler içinde uyumluluk puanınızı ve eksiklerinizi öğrenin.",
-                cv: "Özgeçmişinizi Yükleyin",
-                uploadText: "PDF dosyanızı buraya sürükleyin veya seçin",
-                job: "Hedef İş İlanı",
-                btn: "Yapay Zeka ile Analiz Et",
-                loading: "İK algoritmamız CV'nizi inceliyor, lütfen bekleyin...",
-                wizardTitle: "AI CV Sihirbazı (Madde İyileştirici)",
-                wizardDesc: "CV'nizdeki zayıf veya sıradan bir cümleyi yazın. İK uzmanlarını etkileyecek \"STAR\" metoduna uygun 3 güçlü alternatife dönüştürelim.",
-                wizardPlaceholder: "Örn: Satışları artırdım ve ekibi yönettim.",
-                wizardBtn: "Güçlendir",
-                linkedinTitle: "LinkedIn İK Mesajı",
-                linkedinDesc: "Başvuru sonrası İK uzmanına gönderilecek 50 kelimelik etki mesajı:",
-                compassTitle: "Kariyer Pusulası",
-                compassDesc: "Mevcut yeteneklerinizle başvurabileceğiniz diğer yüksek potansiyelli roller:"
-            } : {
-                heroTitle: "Will Your Resume Pass the ATS?",
-                heroDesc: "Match your resume with the job description using our AI HR algorithm. Find out your score and missing keywords in seconds.",
-                cv: "Upload Your Resume",
-                uploadText: "Drag & drop your PDF here or click to select",
-                job: "Target Job Description",
-                btn: "Analyze with AI",
-                loading: "AI is analyzing your resume, please wait...",
-                wizardTitle: "AI CV Wizard (Bullet Point Optimizer)",
-                wizardDesc: "Enter a weak or generic sentence from your CV. We will convert it into 3 powerful, STAR-method alternatives that will impress HR experts.",
-                wizardPlaceholder: "Ex: Increased sales and managed the team.",
-                wizardBtn: "Optimize",
-                linkedinTitle: "LinkedIn Recruiter Message",
-                linkedinDesc: "A 50-word high-impact message to send to the HR manager after applying:",
-                compassTitle: "Career Compass",
-                compassDesc: "Other high-potential roles you can apply for with your current skill set:"
-            };
+<!-- Hero Section (Girdi Alanı Üstü) -->
+<div id="heroSection" class="text-center mb-10 no-print">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold uppercase tracking-wider mb-4">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+</span>
+Yapay Zeka Destekli
+</div>
+<h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 font-sans tracking-tight mb-4" id="titleInput">
+CV'niz ATS'yi Geçecek Mi?
+</h2>
+<p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" id="descInput">
+İK uzmanı algoritmamızla özgeçmişinizi iş ilanıyla eşleştirin. Saniyeler içinde uyumluluk puanınızı ve eksiklerinizi öğrenin.
+</p>
+</div>
 
-            document.getElementById('titleInput').innerText = t.heroTitle;
-            document.getElementById('descInput').innerText = t.heroDesc;
-            document.getElementById('labelCV').innerText = t.cv;
-            document.getElementById('uploadText').innerText = t.uploadText;
-            document.getElementById('labelJob').innerText = t.job;
-            document.getElementById('btnAnalyzeText').innerText = t.btn;
-            document.getElementById('loadingText').innerText = t.loading;
-            
-            // Yeni eklentilerin dil destekleri
-            if(document.getElementById('resWizard')) document.getElementById('resWizard').innerText = t.wizardTitle;
-            if(document.getElementById('resWizardDesc')) document.getElementById('resWizardDesc').innerText = t.wizardDesc;
-            if(document.getElementById('weakSentence')) document.getElementById('weakSentence').placeholder = t.wizardPlaceholder;
-            if(document.getElementById('btnOptimize')) document.getElementById('btnOptimize').innerText = t.wizardBtn;
-            if(document.getElementById('resLinkedinTitle')) document.getElementById('resLinkedinTitle').innerText = t.linkedinTitle;
-            if(document.getElementById('resLinkedinDesc')) document.getElementById('resLinkedinDesc').innerText = t.linkedinDesc;
-            if(document.getElementById('resCompassTitle')) document.getElementById('resCompassTitle').innerText = t.compassTitle;
-            if(document.getElementById('resCompassDesc')) document.getElementById('resCompassDesc').innerText = t.compassDesc;
-        });
+<!-- Form Alanı -->
+<div id="inputSection" class="bg-white rounded-[2rem] shadow-soft p-6 sm:p-10 mb-8 no-print border border-slate-100 relative overflow-hidden">
+<!-- Dekoratif Arka Plan Işıltısı -->
+<div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-brand-50 opacity-50 blur-3xl pointer-events-none"></div>
 
-        // Sürükle ve Bırak (Drag & Drop) ve Dosya Seçimi İşlemleri
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('cvFile');
-        const uploadText = document.getElementById('uploadText');
-        const uploadIcon = document.getElementById('uploadIcon');
-        const uploadSubText = document.getElementById('uploadSubText');
+<div class="space-y-8 relative z-10">
 
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-        });
+<!-- Adım 1: CV Yükleme -->
+<div>
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center font-sans">1</div>
+<label class="text-lg font-bold text-slate-800 font-sans" id="labelCV">Özgeçmişinizi Yükleyin</label>
+</div>
 
-        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+<!-- Modern Dosya Sürükle Bırak -->
+<div class="drop-zone border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center cursor-pointer relative group bg-slate-50/50" id="dropZone">
+<input type="file" id="cvFile" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+<div id="uploadIcon" class="text-brand-500 mb-3 transform group-hover:-translate-y-1 transition duration-300">
+<i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+</div>
+<p id="uploadText" class="font-bold text-slate-700 text-base">PDF dosyanızı buraya sürükleyin veya seçin</p>
+<p id="uploadSubText" class="text-sm text-slate-400 mt-1 font-medium">Maksimum 5MB (.pdf)</p>
+</div>
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
-        });
+<!-- Veya Metin Alanı -->
+<div class="mt-4">
+<div class="flex items-center mb-4">
+<div class="flex-grow border-t border-slate-200"></div>
+<span class="flex-shrink-0 mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">VEYA METNİ YAPIŞTIRIN</span>
+<div class="flex-grow border-t border-slate-200"></div>
+</div>
+<textarea id="cvText" rows="4" class="w-full border border-slate-200 rounded-xl p-4 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition bg-slate-50 placeholder-slate-400" placeholder="Eğer PDF yükleyemiyorsanız, CV'nizdeki yazıları kopyalayıp buraya yapıştırabilirsiniz..."></textarea>
+</div>
+</div>
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
-        });
+<!-- Adım 2: İş İlanı -->
+<div class="pt-2 border-t border-slate-100">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center font-sans">2</div>
+<label class="text-lg font-bold text-slate-800 font-sans" id="labelJob">Hedef İş İlanı</label>
+</div>
+<textarea id="jobText" rows="6" class="w-full border border-slate-200 rounded-xl p-4 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition bg-slate-50 placeholder-slate-400" placeholder="Başvurmak istediğiniz pozisyonun detaylarını (Aranan nitelikler, iş tanımı vb.) buraya yapıştırın. Yapay zeka sizi bu metne göre sınayacaktır..."></textarea>
+</div>
 
-        dropZone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            if(dt.files && dt.files.length > 0) {
-                fileInput.files = dt.files;
-                handleFileUpload(dt.files[0]);
-            }
-        });
+<!-- Aksiyon Butonu -->
+<div class="pt-4">
+<button id="analyzeBtn" onclick="startAnalysis()" class="w-full sm:w-auto sm:px-12 bg-slate-900 hover:bg-brand-600 text-white font-bold py-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-brand-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 text-lg font-sans mx-auto">
+<i class="fa-solid fa-wand-magic-sparkles"></i> <span id="btnAnalyzeText">Yapay Zeka ile Analiz Et</span>
+</button>
+</div>
+</div>
+</div>
 
-        fileInput.addEventListener('change', function(e) {
-            if(e.target.files.length > 0) handleFileUpload(e.target.files[0]);
-        });
+<!-- Yükleme Ekranı -->
+<div id="loadingSection" class="hidden flex-col items-center justify-center py-20 no-print">
+<div class="loader-ring mb-6"><div></div><div></div><div></div><div></div></div>
+<h3 class="text-2xl font-bold text-slate-800 font-sans mb-2" id="loadingTitle">Analiz Ediliyor</h3>
+<p class="text-slate-500" id="loadingText">İK algoritmamız CV'nizi inceliyor, lütfen bekleyin...</p>
+</div>
 
-        async function handleFileUpload(file) {
-            if(file.type !== "application/pdf") {
-                alert(currentLang === 'tr' ? "Lütfen sadece PDF yükleyin." : "Please upload PDF only.");
-                return;
-            }
-            
-            // Görsel geri bildirim
-            dropZone.classList.add('bg-emerald-50', 'border-emerald-300');
-            uploadIcon.innerHTML = '<i class="fa-solid fa-file-circle-check text-emerald-500 text-4xl"></i>';
-            uploadText.innerHTML = `<span class="text-emerald-700">${file.name}</span>`;
-            uploadSubText.innerText = currentLang === 'tr' ? 'Dosya başarıyla eklendi, okunuyor...' : 'File added, reading...';
+<!-- Sonuç Alanı -->
+<div id="resultsSection" class="hidden opacity-0 transform translate-y-4 transition-all duration-700 ease-out">
 
-            try {
-                const reader = new FileReader();
-                reader.onload = async function() {
-                    const typedarray = new Uint8Array(this.result);
-                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    let text = '';
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const content = await page.getTextContent();
-                        text += content.items.map(item => item.str).join(' ') + ' ';
-                    }
-                    document.getElementById('cvText').value = text;
-                    uploadSubText.innerText = currentLang === 'tr' ? 'Okuma başarılı. Analize hazır.' : 'Read successful. Ready to analyze.';
-                    uploadSubText.classList.add('text-emerald-600');
-                };
-                reader.readAsArrayBuffer(file);
-            } catch (err) {
-                uploadSubText.innerText = 'Okuma hatası. Lütfen metni kopyalayın.';
-                uploadSubText.classList.add('text-rose-500');
-            }
-        }
+<!-- Rapor Aksiyonları -->
+<div class="flex justify-between items-center mb-6 no-print">
+<button onclick="resetForm()" class="text-slate-500 hover:text-slate-800 font-semibold text-sm transition flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
+<i class="fa-solid fa-arrow-left"></i> Yeni Analiz
+</button>
+<button onclick="window.print()" class="bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+<i class="fa-solid fa-download"></i> <span id="btnPrint">Raporu İndir</span>
+</button>
+</div>
 
-        // PDF Dosya Okuma - HATA YAKALAMA DÜZELTİLDİ
-        document.getElementById('cvFile').addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            const cvTextEl = document.getElementById('cvText');
-            
-            if(file && file.type === "application/pdf") {
-                cvTextEl.value = currentLang === 'tr' ? "PDF okunuyor, lütfen bekleyin..." : "Reading PDF, please wait...";
-                
-                const reader = new FileReader();
-                
-                reader.onload = async function() {
-                    try {
-                        const typedarray = new Uint8Array(this.result);
-                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                        let text = '';
-                        for (let i = 1; i <= pdf.numPages; i++) {
-                            const page = await pdf.getPage(i);
-                            const content = await page.getTextContent();
-                            text += content.items.map(item => item.str).join(' ') + ' ';
-                        }
-                        cvTextEl.value = text;
-                    } catch (err) {
-                        console.error("PDF İşleme Hatası:", err);
-                        cvTextEl.value = currentLang === 'tr' ? "Hata: PDF okunamadı. Şifreli veya bozuk olabilir. Lütfen metni kopyalayıp buraya yapıştırın." : "Error: Could not read PDF. It might be encrypted or corrupted. Please paste the text here.";
-                    }
-                };
+<!-- Skor Kartı (Hero) -->
+<div class="bg-white rounded-3xl shadow-soft border border-slate-100 p-8 sm:p-10 flex flex-col md:flex-row items-center gap-10 mb-8 relative overflow-hidden">
+<div class="absolute left-0 top-0 w-2 h-full bg-brand-500" id="scoreBar"></div>
 
-                reader.onerror = function(err) {
-                    console.error("Dosya Okuma Hatası:", err);
-                     cvTextEl.value = currentLang === 'tr' ? "Hata: Dosya yüklenirken bir sorun oluştu." : "Error: A problem occurred while uploading the file.";
-                };
+<div class="flex flex-col items-center relative">
+<div id="scoreCircle" class="score-circle bg-slate-100">
+<span id="scoreValue" class="z-10 text-slate-800">0</span><span class="text-2xl text-slate-500 z-10 ml-1">%</span>
+</div>
+<span class="mt-4 text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="resScoreTitle">ATS Uyumu</span>
+</div>
 
-                reader.readAsArrayBuffer(file);
-            }
-        });
+<div class="flex-1 text-center md:text-left">
+<div class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold mb-3 uppercase" id="scoreBadge">Analiz Tamamlandı</div>
+<h2 class="text-3xl font-extrabold text-slate-900 font-sans mb-3" id="scoreHeading">Sonuçlar Hazır!</h2>
+<p class="text-slate-600 text-lg leading-relaxed" id="scoreMessage">Özet mesajı buraya gelecek.</p>
+</div>
+</div>
 
-        // Analizi Başlat
-        async function startAnalysis() {
-            const cvText = document.getElementById('cvText').value.trim();
-            const jobText = document.getElementById('jobText').value.trim();
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+<!-- Güçlü Yönler -->
+<div class="bg-emerald-50/50 rounded-3xl p-6 sm:p-8 border border-emerald-100">
+<div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-xl mb-5 shadow-sm">
+<i class="fa-solid fa-check"></i>
+</div>
+<h3 class="text-slate-800 font-extrabold font-sans text-xl mb-4" id="resStrengths">Eşleşen Güçlü Yönler</h3>
+<ul id="strengthsList" class="space-y-3 text-emerald-900 text-sm font-medium"></ul>
+</div>
 
-            if (!cvText || !jobText) {
-                alert(currentLang === 'tr' ? "Lütfen özgeçmiş metni ve iş ilanı alanlarını doldurun." : "Please fill in both resume and job description fields.");
-                return;
-            }
+<!-- Eksikler -->
+<div class="bg-rose-50/50 rounded-3xl p-6 sm:p-8 border border-rose-100">
+<div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-xl mb-5 shadow-sm">
+<i class="fa-solid fa-xmark"></i>
+</div>
+<h3 class="text-slate-800 font-extrabold font-sans text-xl mb-4" id="resMissing">Eksik Anahtar Kelimeler</h3>
+<div class="text-xs text-rose-500 mb-3 font-semibold uppercase tracking-wider">İlanın Aradığı Ancak CV'de Olmayanlar:</div>
+<div id="missingList" class="flex flex-wrap gap-2"></div>
+</div>
+</div>
 
-            document.getElementById('heroSection').classList.add('hidden');
-            document.getElementById('inputSection').classList.add('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('resultsSection').classList.remove('opacity-100', 'translate-y-0');
-            document.getElementById('loadingSection').classList.remove('hidden');
-            document.getElementById('loadingSection').classList.add('flex');
+<!-- Öneriler -->
+<div class="bg-brand-50/50 rounded-3xl p-6 sm:p-8 border border-brand-100 mb-8 page-break">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center text-xl shadow-sm">
+<i class="fa-regular fa-lightbulb"></i>
+</div>
+<h3 class="text-slate-800 font-extrabold font-sans text-xl" id="resSuggestions">İK Uzmanı Önerileri</h3>
+</div>
+<ul id="suggestionsList" class="space-y-4 text-brand-900 text-sm md:text-base leading-relaxed"></ul>
+</div>
 
-            const promptLang = currentLang === 'tr' ? "Yanıtı tamamen Türkçe ver." : "Give the response entirely in English.";
-            const prompt = `
-            Bir İK uzmanı ve katı bir ATS (Aday Takip Sistemi) olarak davran. 
-            Aşağıdaki CV'yi ve İş İlanını incele. 
-            Eğer verilen metinlerden biri CV veya iş ilanı gibi durmuyorsa skoru 0 yap.
-            ${promptLang}
-            Sonucu sadece aşağıdaki formatta geçerli bir JSON olarak dön (markdown blokları kullanma):
-            {
-                "score": 85,
-                "message": "Genel değerlendirme mesajı",
-                "strengths": ["Güçlü yön 1", "Güçlü yön 2"],
-                "missing": ["Eksik kelime 1", "Eksik kelime 2"],
-                "suggestions": ["Öneri 1", "Öneri 2"],
-                "interview_questions": ["Soru 1", "Soru 2"],
-                "cover_letter": "Profesyonel ön yazı taslağı",
-                "linkedin_message": "İlana başvurduktan sonra adayın şirketin İK uzmanına LinkedIn'den gönderebileceği, adayın en güçlü özelliğini vurgulayan 50 kelimelik, akılda kalıcı tanışma mesajı. (Boşluk doldurmalı alanlar bırak: [İK Yetkilisi İsmi] gibi)",
-                "alternative_roles": ["Rol/Ünvan 1", "Rol/Ünvan 2", "Rol/Ünvan 3"]
-            }
-            CV Metni: ${cvText}
-            İş İlanı: ${jobText}
-            `;
+<!-- Premium: Mülakat Simülasyonu -->
+<div class="bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl mb-8 page-break text-white relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-4 mb-6 relative z-10">
+<div class="w-12 h-12 bg-slate-800 text-amber-400 border border-slate-700 rounded-2xl flex items-center justify-center text-xl shadow-sm">
+<i class="fa-solid fa-microphone-lines"></i>
+</div>
+<div>
+<h3 class="font-extrabold font-sans text-xl text-white" id="resInterview">Mülakat Simülasyonu</h3>
+<span class="text-xs font-bold bg-amber-500 text-slate-900 px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block no-print">Premium Özellik</span>
+</div>
+</div>
+<p class="text-slate-400 text-sm mb-6 relative z-10" id="resInterviewDesc">Zayıf noktalarınıza göre mülakatta size sorulması en muhtemel zorlayıcı sorular:</p>
+<div id="interviewQuestions" class="space-y-4 relative z-10"></div>
+</div>
 
-            try {
-                // DOĞRUDAN VERCEL ARKA PLANINA İSTEK ATIYORUZ
-                const response = await fetch('/api/analyze', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
-                });
+<!-- Premium: Ön Yazı (Cover Letter) -->
+<div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-soft mb-8 page-break relative group">
+<div class="flex justify-between items-start sm:items-center mb-6 flex-col sm:flex-row gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-indigo-100">
+<i class="fa-solid fa-envelope-open-text"></i>
+</div>
+<div>
+<h3 class="font-extrabold font-sans text-xl text-slate-800" id="resCover">Size Özel Ön Yazı</h3>
+<span class="text-xs font-bold bg-indigo-600 text-white px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block no-print">Premium Özellik</span>
+</div>
+</div>
+<button onclick="copyText('coverLetterText', this)" class="text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl transition no-print flex items-center gap-2">
+<i class="fa-regular fa-copy"></i> Metni Kopyala
+</button>
+</div>
+<div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+<p id="coverLetterText" class="text-sm sm:text-base text-slate-700 whitespace-pre-wrap leading-loose font-body"></p>
+</div>
+</div>
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                
-                if (!jsonStr) {
-                     throw new Error("Yapay zeka yanıtı boş döndü. (Model kısıtlamasına takılmış olabilir)");
-                }
-                
-                jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
-                
-                const result = JSON.parse(jsonStr);
+<div class="grid md:grid-cols-2 gap-6 mb-8 page-break">
+<!-- LinkedIn Arka Kapı Mesajı -->
+<div class="bg-sky-50/50 rounded-3xl p-6 border border-sky-100 relative">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center text-lg shadow-sm">
+<i class="fa-brands fa-linkedin-in"></i>
+</div>
+<h3 class="text-slate-800 font-extrabold font-sans text-lg" id="resLinkedinTitle">LinkedIn İK Mesajı</h3>
+</div>
+<button onclick="copyText('linkedinMessageText', this)" class="text-xs bg-white border border-sky-200 hover:bg-sky-50 text-sky-700 font-bold px-3 py-1.5 rounded-lg transition no-print flex items-center gap-1">
+<i class="fa-regular fa-copy"></i> Al
+</button>
+</div>
+<p class="text-xs text-sky-600 mb-3 font-semibold uppercase tracking-wider" id="resLinkedinDesc">Başvuru sonrası İK uzmanına gönderilecek 50 kelimelik etki mesajı:</p>
+<div class="bg-white rounded-xl p-4 border border-sky-100 shadow-sm">
+<p id="linkedinMessageText" class="text-sm text-slate-700 whitespace-pre-wrap italic"></p>
+</div>
+</div>
 
-                renderResults(result);
-                saveToHistory(jobText.substring(0, 25) + "...", result.score);
+<!-- Kariyer Pusulası (Alternatif Roller) -->
+<div class="bg-fuchsia-50/50 rounded-3xl p-6 border border-fuchsia-100 relative">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 bg-fuchsia-100 text-fuchsia-600 rounded-xl flex items-center justify-center text-lg shadow-sm">
+<i class="fa-solid fa-compass"></i>
+</div>
+<h3 class="text-slate-800 font-extrabold font-sans text-lg" id="resCompassTitle">Kariyer Pusulası</h3>
+</div>
+<p class="text-xs text-fuchsia-600 mb-4 font-semibold uppercase tracking-wider" id="resCompassDesc">Mevcut yeteneklerinizle başvurabileceğiniz diğer yüksek potansiyelli roller:</p>
+<ul id="alternativeRolesList" class="space-y-3">
+<!-- Alternatif Roller Buraya Gelecek -->
+</ul>
+</div>
+</div>
 
-            } catch (error) {
-                console.error("Sistem Hatası Detayı:", error);
-                
-                let msg = currentLang === 'tr' ? "Analiz sırasında bir hata oluştu.\nDetay: " : "An error occurred.\nDetail: ";
-                alert(msg + error.message);
-                
-                resetForm();
-            }
-        }
+<!-- AI CV Sihirbazı (Cümle İyileştirici) -->
+<div class="bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl mb-8 page-break text-white relative overflow-hidden no-print">
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-4 mb-6 relative z-10">
+<div class="w-12 h-12 bg-slate-800 text-indigo-400 border border-slate-700 rounded-2xl flex items-center justify-center text-xl shadow-sm">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+</div>
+<div>
+<h3 class="font-extrabold font-sans text-xl text-white" id="resWizard">AI CV Sihirbazı (Madde İyileştirici)</h3>
+<span class="text-xs font-bold bg-indigo-500 text-slate-900 px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block">Mini Araç</span>
+</div>
+</div>
+<p class="text-slate-400 text-sm mb-6 relative z-10" id="resWizardDesc">CV'nizdeki zayıf veya sıradan bir cümleyi yazın. İK uzmanlarını etkileyecek "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 güçlü alternatife dönüştürelim.</p>
 
-        // Sonuçları Çiz
-        function renderResults(data) {
-            document.getElementById('loadingSection').classList.remove('flex');
-            document.getElementById('loadingSection').classList.add('hidden');
-            
-            const resSec = document.getElementById('resultsSection');
-            resSec.classList.remove('hidden');
-            
-            // Animasyon için reflow
-            void resSec.offsetWidth;
-            resSec.classList.remove('opacity-0', 'translate-y-4');
-            resSec.classList.add('opacity-100', 'translate-y-0');
+<div class="flex flex-col sm:flex-row gap-3 mb-4 relative z-10">
+<input type="text" id="weakSentence" class="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-4 text-sm outline-none focus:border-indigo-500 text-slate-200 placeholder-slate-500" placeholder="Örn: Satışları artırdım ve ekibi yönettim.">
+<button onclick="optimizeSentence()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap">
+<i class="fa-solid fa-bolt"></i> <span id="btnOptimize">Güçlendir</span>
+</button>
+</div>
 
-            // Skor Renklendirme ve Animasyonu
-            const scoreEl = document.getElementById('scoreValue');
-            const scoreCircle = document.getElementById('scoreCircle');
-            const scoreHeading = document.getElementById('scoreHeading');
-            const scoreBar = document.getElementById('scoreBar');
-            
-            let color = 'text-brand-500';
-            let bgClass = 'bg-brand-500';
-            
-            if(data.score >= 80) { color = 'text-emerald-500'; bgClass = 'bg-emerald-500'; scoreHeading.innerText = currentLang==='tr'?'Mükemmel Eşleşme! 🎯':'Perfect Match! 🎯'; }
-            else if(data.score >= 50) { color = 'text-amber-500'; bgClass = 'bg-amber-500'; scoreHeading.innerText = currentLang==='tr'?'Ortalama Eşleşme 👍':'Average Match 👍'; }
-            else { color = 'text-rose-500'; bgClass = 'bg-rose-500'; scoreHeading.innerText = currentLang==='tr'?'Zayıf Eşleşme ⚠️':'Weak Match ⚠️'; }
+                <div id="optimizedResult" class="hidden bg-slate-800/80 p-6 rounded-2xl border border-slate-700 text-sm text-slate-300 space-y-4 relative z-10 mt-4">
+                <div id="optimizedResult" class="class="text-[11px] sm:text-sm text-gray-700 hover:text-gray-900 font-bold whitespace-nowrap mx-1">
+<!-- Sonuçlar buraya gelecek -->
+</div>
+</div>
 
-            scoreEl.className = `z-10 text-6xl tracking-tighter ${color}`;
-            scoreBar.className = `absolute left-0 top-0 w-2 h-full ${bgClass}`;
-            
-            // Sayı sayma animasyonu
-            let current = 0;
-            const timer = setInterval(() => {
-                current += 2;
-                if(current >= data.score) { current = data.score; clearInterval(timer); }
-                scoreEl.innerText = current;
-                // scoreCircle.style.background = `conic-gradient(${bgClass.replace('bg-','var(--tw-colors-')} ${current}%, #f1f5f9 0)`; // Opsiyonel Conic Gradient
-            }, 20);
+<!-- Kahve Ismarla (Alt CTA) -->
+<div class="text-center py-10 no-print">
+<div class="inline-block p-4 rounded-3xl bg-amber-50 border border-amber-100 max-w-lg">
+<p class="text-amber-800 mb-4 text-sm font-semibold" id="donateText">Bu analiz işinize yaradıysa, sistemi yaşatmak için geliştiriciye bir kahve ısmarlayabilirsiniz ☕</p>
+<button onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-3 px-8 rounded-xl transition shadow-sm inline-flex items-center gap-2 justify-center">
+<i class="fa-solid fa-mug-hot"></i> Destek Ol
+</button>
+</div>
+</div>
+</div>
+</main>
 
-            document.getElementById('scoreMessage').innerText = data.message;
+<!-- Footer -->
+<footer class="bg-white border-t border-slate-200 mt-auto py-6 no-print">
+<div class="max-w-4xl mx-auto px-6 text-center">
+<p class="text-slate-400 text-sm font-medium">&copy; 2026 ATSCheck. Tüm verileriniz tarayıcınızda işlenir, sunucularda saklanmaz.</p>
+</div>
+</footer>
 
-            // Listeler
-            const fillList = (id, items, icon, iconColor) => {
-                document.getElementById(id).innerHTML = items.map(i => `
-                    <li class="flex items-start gap-2">
-                        <i class="fa-solid ${icon} ${iconColor} mt-1 text-[10px]"></i>
-                        <span>${i}</span>
-                    </li>
-                `).join('');
-            };
-            
-            fillList('strengthsList', data.strengths, 'fa-circle-check', 'text-emerald-400');
-            fillList('suggestionsList', data.suggestions, 'fa-arrow-right', 'text-brand-400');
+<!-- Modallar -->
+<!-- 1. Nasıl Çalışır Modalı -->
+<div id="howItWorksModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+<div class="glass-modal w-full max-w-md rounded-3xl p-8 transform scale-95 opacity-0 transition-all duration-300" id="howItWorksContent">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-extrabold font-sans text-slate-800">Sistem Nasıl Çalışır?</h3>
+<button onclick="closeModal('howItWorksModal')" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-rose-100 hover:text-rose-600 transition"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="space-y-6 text-sm text-slate-600 font-medium">
+<div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">1</div><p class="leading-relaxed">PDF formatındaki CV'nizi yükleyin veya içeriğini metin olarak yapıştırın.</p></div>
+<div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">2</div><p class="leading-relaxed">Başvuracağınız iş ilanının tam metnini kopyalayıp ilgili alana yapıştırın.</p></div>
+<div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">3</div><p class="leading-relaxed">Yapay zeka (Gemini AI) her iki metni okur, kurumsal İK algoritmalarını simüle ederek eksiklerinizi ve size özel ön yazıyı hazırlar.</p></div>
+</div>
+<button onclick="closeModal('coffeeModal')" class="absolute top-4 right-4 text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+<div class="text-4xl mb-4">☕</div>
+<h3 class="text-xl font-bold text-gray-900 mb-2">Desteğiniz İçin Teşekkürler!</h3>
+<p class="text-sm text-gray-600 mb-6">Bu aracı ücretsiz ve reklamsız tutabilmek için bağışlarınıza güveniyoruz. Destek olmak için güvenli ödeme sayfasına (Shopier/BuyMeACoffee) yönlendirileceksiniz.</p>
 
-            // Eksik kelimeleri badge olarak göster
-            document.getElementById('missingList').innerHTML = data.missing.length > 0 
-                ? data.missing.map(m => `<span class="bg-white border border-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-sm font-bold shadow-sm">${m}</span>`).join('')
-                : `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i> ${currentLang==='tr'?'Önemli bir eksik bulunmadı.':'No major keywords missing.'}</span>`;
+<!-- BAĞIŞ LİNKİNİZİ BURAYA EKLEYİN -->
+<button type="button" onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="block w-full bg-[#FFDD00] hover:bg-[#ffea4d] text-gray-900 font-bold py-3 rounded-xl transition shadow-sm mb-2 text-center cursor-pointer relative z-50">☕ Destek Ol</button>
+<button onclick="closeModal('coffeeModal')" class="text-sm text-gray-500 hover:text-gray-800 mt-2">Belki Daha Sonra</button>
+</div>
+</div>
 
-            // Mülakat
-            document.getElementById('interviewQuestions').innerHTML = data.interview_questions.map((q, idx) => `
-                <div class="bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-700">
-                    <span class="text-amber-500 text-xs font-bold uppercase tracking-widest block mb-1">Soru ${idx+1}</span>
-                    <p class="font-medium text-slate-200 text-sm sm:text-base leading-relaxed">${q}</p>
-                </div>
-            `).join('');
+<script>
+// ARTIK API KEY BURADA YOK (GÜVENLİK İÇİN)!
+// İstekler Vercel'deki '/api/analyze' endpoint'ine gidecek.
 
-            // Ön Yazı, LinkedIn ve Kariyer Pusulası
-            document.getElementById('coverLetterText').innerText = data.cover_letter;
-            document.getElementById('linkedinMessageText').innerText = data.linkedin_message;
-            
-            document.getElementById('alternativeRolesList').innerHTML = data.alternative_roles.map(role => `
-                <li class="flex items-center gap-3 bg-white p-3 rounded-xl border border-fuchsia-100 shadow-sm">
-                    <div class="w-2 h-2 rounded-full bg-fuchsia-400"></div>
-                    <span class="font-bold text-slate-700 text-sm">${role}</span>
-                </li>
-            `).join('');
-        }
+// PDF.js Ayarı
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // Yeni Analiz Butonu
-        function resetForm() {
-            document.getElementById('resultsSection').classList.add('hidden', 'opacity-0');
-            document.getElementById('heroSection').classList.remove('hidden');
-            document.getElementById('inputSection').classList.remove('hidden');
-            document.getElementById('loadingSection').classList.remove('flex');
-            document.getElementById('loadingSection').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+let currentLang = 'tr';
 
-        // Evrensel Kopyalama Fonksiyonu
-        function copyText(elementId, btn) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> Alındı`;
-                setTimeout(() => btn.innerHTML = originalHtml, 2000);
-            });
-        }
+// Çoklu Dil
+document.getElementById('langSelect').addEventListener('change', (e) => {
+currentLang = e.target.value;
+const t = currentLang === 'tr' ? {
+heroTitle: "CV'niz ATS'yi Geçecek Mi?",
+heroDesc: "İK uzmanı algoritmamızla özgeçmişinizi iş ilanıyla eşleştirin. Saniyeler içinde uyumluluk puanınızı ve eksiklerinizi öğrenin.",
+cv: "Özgeçmişinizi Yükleyin",
+uploadText: "PDF dosyanızı buraya sürükleyin veya seçin",
+job: "Hedef İş İlanı",
+btn: "Yapay Zeka ile Analiz Et",
+loading: "İK algoritmamız CV'nizi inceliyor, lütfen bekleyin...",
+wizardTitle: "AI CV Sihirbazı (Madde İyileştirici)",
+wizardDesc: "CV'nizdeki zayıf veya sıradan bir cümleyi yazın. İK uzmanlarını etkileyecek \"STAR\" metoduna uygun 3 güçlü alternatife dönüştürelim.",
+wizardPlaceholder: "Örn: Satışları artırdım ve ekibi yönettim.",
+wizardBtn: "Güçlendir",
+linkedinTitle: "LinkedIn İK Mesajı",
+linkedinDesc: "Başvuru sonrası İK uzmanına gönderilecek 50 kelimelik etki mesajı:",
+compassTitle: "Kariyer Pusulası",
+compassDesc: "Mevcut yeteneklerinizle başvurabileceğiniz diğer yüksek potansiyelli roller:"
+} : {
+heroTitle: "Will Your Resume Pass the ATS?",
+heroDesc: "Match your resume with the job description using our AI HR algorithm. Find out your score and missing keywords in seconds.",
+cv: "Upload Your Resume",
+uploadText: "Drag & drop your PDF here or click to select",
+job: "Target Job Description",
+btn: "Analyze with AI",
+loading: "AI is analyzing your resume, please wait...",
+wizardTitle: "AI CV Wizard (Bullet Point Optimizer)",
+wizardDesc: "Enter a weak or generic sentence from your CV. We will convert it into 3 powerful, STAR-method alternatives that will impress HR experts.",
+wizardPlaceholder: "Ex: Increased sales and managed the team.",
+wizardBtn: "Optimize",
+linkedinTitle: "LinkedIn Recruiter Message",
+linkedinDesc: "A 50-word high-impact message to send to the HR manager after applying:",
+compassTitle: "Career Compass",
+compassDesc: "Other high-potential roles you can apply for with your current skill set:"
+};
 
-        // AI CV Sihirbazı (Cümle İyileştirme)
-        async function optimizeSentence() {
-            const input = document.getElementById('weakSentence').value.trim();
-            if (!input) {
-                alert(currentLang === 'tr' ? "Lütfen iyileştirilecek bir cümle yazın." : "Please enter a sentence to optimize.");
-                return;
-            }
+document.getElementById('titleInput').innerText = t.heroTitle;
+document.getElementById('descInput').innerText = t.heroDesc;
+document.getElementById('labelCV').innerText = t.cv;
+document.getElementById('uploadText').innerText = t.uploadText;
+document.getElementById('labelJob').innerText = t.job;
+document.getElementById('btnAnalyzeText').innerText = t.btn;
+document.getElementById('loadingText').innerText = t.loading;
 
-            const btn = document.getElementById('btnOptimize');
-            const originalText = btn.innerText;
-            btn.innerText = currentLang === 'tr' ? "Yazılıyor..." : "Rewriting...";
-            document.getElementById('optimizedResult').classList.add('hidden');
+// Yeni eklentilerin dil destekleri
+if(document.getElementById('resWizard')) document.getElementById('resWizard').innerText = t.wizardTitle;
+if(document.getElementById('resWizardDesc')) document.getElementById('resWizardDesc').innerText = t.wizardDesc;
+if(document.getElementById('weakSentence')) document.getElementById('weakSentence').placeholder = t.wizardPlaceholder;
+if(document.getElementById('btnOptimize')) document.getElementById('btnOptimize').innerText = t.wizardBtn;
+if(document.getElementById('resLinkedinTitle')) document.getElementById('resLinkedinTitle').innerText = t.linkedinTitle;
+if(document.getElementById('resLinkedinDesc')) document.getElementById('resLinkedinDesc').innerText = t.linkedinDesc;
+if(document.getElementById('resCompassTitle')) document.getElementById('resCompassTitle').innerText = t.compassTitle;
+if(document.getElementById('resCompassDesc')) document.getElementById('resCompassDesc').innerText = t.compassDesc;
+});
 
-            const prompt = currentLang === 'tr' 
-                ? `Adayın CV'sindeki şu cümleyi incele: "${input}". Bunu İK uzmanlarını etkileyecek, "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 farklı güçlü alternatife dönüştür. Lütfen sadece 3 elemanlı bir JSON string dizisi olarak dön: ["Alt 1", "Alt 2", "Alt 3"]. (Markdown veya başka metin ekleme)`
-                : `Analyze this sentence from a candidate's CV: "${input}". Rewrite it into 3 powerful alternatives using the STAR (Situation, Task, Action, Result) method to impress HR professionals. Please return strictly as a JSON array of 3 strings: ["Alt 1", "Alt 2", "Alt 3"]. (No markdown, no extra text)`;
+// Sürükle ve Bırak (Drag & Drop) ve Dosya Seçimi İşlemleri
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('cvFile');
+const uploadText = document.getElementById('uploadText');
+const uploadIcon = document.getElementById('uploadIcon');
+const uploadSubText = document.getElementById('uploadSubText');
 
-            try {
-                // SİHİRBAZ İÇİN DE VERCEL API KULLANILIYOR
-                const response = await fetch('/api/analyze', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
-                });
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+dropZone.addEventListener(eventName, preventDefaults, false);
+});
 
-                if (!response.ok) {
-                     const errorData = await response.json();
-                     throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                
-                if (!jsonStr) {
-                    throw new Error("Yapay zeka yanıtı boş döndü.");
-                }
+function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
 
-                jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
-                const resultList = JSON.parse(jsonStr);
-                
-                const resultDiv = document.getElementById('optimizedResult');
-                resultDiv.innerHTML = resultList.map(line => `
-                    <div class="flex items-start gap-3 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50 shadow-sm">
-                        <div class="text-indigo-400 mt-0.5"><i class="fa-solid fa-check-double"></i></div>
-                        <p class="font-medium leading-relaxed">${line}</p>
-                    </div>
-                `).join('');
-                
-                resultDiv.classList.remove('hidden');
-                btn.innerText = originalText;
+['dragenter', 'dragover'].forEach(eventName => {
+dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+});
 
-            } catch (error) {
-                console.error("Analiz Detaylı Hata:", error);
-                alert((currentLang === 'tr' ? "Analiz sırasında hata: " : "Error during analysis: ") + error.message);
-                btn.innerText = originalText;
-                
-            } finally {
-                document.getElementById('loadingSection').classList.add('hidden');
-            }
-        }
+['dragleave', 'drop'].forEach(eventName => {
+dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+});
 
-        // Geçmiş Yönetimi (History Sidebar)
-        function saveToHistory(title, score) {
-            let history = JSON.parse(localStorage.getItem('atsCheckHistory')) || [];
-            const date = new Date().toLocaleDateString();
-            history.unshift({ title, score, date });
-            if (history.length > 10) history.pop();
-            localStorage.setItem('atsCheckHistory', JSON.stringify(history));
-            renderHistory();
-        }
+dropZone.addEventListener('drop', (e) => {
+const dt = e.dataTransfer;
+if(dt.files && dt.files.length > 0) {
+fileInput.files = dt.files;
+handleFileUpload(dt.files[0]);
+}
+});
 
-        function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('atsCheckHistory')) || [];
-            const container = document.getElementById('historyList');
-            if (history.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 opacity-50"><i class="fa-regular fa-folder-open text-3xl mb-2"></i><p class="text-sm font-medium">Kayıt bulunamadı.</p></div>`;
-                return;
-            }
-            container.innerHTML = history.map(item => {
-                let badgeColor = 'bg-brand-100 text-brand-700';
-                if(item.score >= 80) badgeColor = 'bg-emerald-100 text-emerald-700';
-                else if(item.score < 50) badgeColor = 'bg-rose-100 text-rose-700';
-                
-                return `
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-center group cursor-default hover:border-brand-200 transition">
-                    <div class="overflow-hidden">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${item.date}</p>
-                        <p class="text-sm font-bold text-slate-700 truncate w-44 font-sans">${item.title}</p>
-                    </div>
-                    <div class="${badgeColor} font-extrabold px-3 py-1.5 rounded-xl text-sm font-sans flex items-center gap-1 shadow-sm">
-                        ${item.score}<span class="text-[10px] opacity-70">%</span>
-                    </div>
-                </div>
-            `}).join('');
-        }
+fileInput.addEventListener('change', function(e) {
+if(e.target.files.length > 0) handleFileUpload(e.target.files[0]);
+});
 
-        function toggleHistory() {
-            const sidebar = document.getElementById('historySidebar');
-            if (sidebar.classList.contains('sidebar-closed')) {
-                renderHistory();
-                sidebar.classList.remove('sidebar-closed');
-                sidebar.classList.add('sidebar-open');
-            } else {
-                sidebar.classList.add('sidebar-closed');
-                sidebar.classList.remove('sidebar-open');
-            }
-        }
+async function handleFileUpload(file) {
+if(file.type !== "application/pdf") {
+alert(currentLang === 'tr' ? "Lütfen sadece PDF yükleyin." : "Please upload PDF only.");
+return;
+}
 
-        // Modal (Açılır Pencere) Yönetimi
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            const content = modal.children[0];
-            modal.classList.remove('hidden');
-            // Animasyon için reflow
-            void modal.offsetWidth;
-            content.classList.remove('scale-95', 'opacity-0');
-            content.classList.add('scale-100', 'opacity-100');
-        }
+// Görsel geri bildirim
+dropZone.classList.add('bg-emerald-50', 'border-emerald-300');
+uploadIcon.innerHTML = '<i class="fa-solid fa-file-circle-check text-emerald-500 text-4xl"></i>';
+uploadText.innerHTML = `<span class="text-emerald-700">${file.name}</span>`;
+uploadSubText.innerText = currentLang === 'tr' ? 'Dosya başarıyla eklendi, okunuyor...' : 'File added, reading...';
 
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            const content = modal.children[0];
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
+try {
+const reader = new FileReader();
+reader.onload = async function() {
+const typedarray = new Uint8Array(this.result);
+const pdf = await pdfjsLib.getDocument(typedarray).promise;
+let text = '';
+for (let i = 1; i <= pdf.numPages; i++) {
+const page = await pdf.getPage(i);
+const content = await page.getTextContent();
+text += content.items.map(item => item.str).join(' ') + ' ';
+}
+document.getElementById('cvText').value = text;
+uploadSubText.innerText = currentLang === 'tr' ? 'Okuma başarılı. Analize hazır.' : 'Read successful. Ready to analyze.';
+uploadSubText.classList.add('text-emerald-600');
+};
+reader.readAsArrayBuffer(file);
+} catch (err) {
+uploadSubText.innerText = 'Okuma hatası. Lütfen metni kopyalayın.';
+uploadSubText.classList.add('text-rose-500');
+}
+}
 
-    </script>
+// PDF Dosya Okuma - HATA YAKALAMA DÜZELTİLDİ
+document.getElementById('cvFile').addEventListener('change', async function(e) {
+const file = e.target.files[0];
+const cvTextEl = document.getElementById('cvText');
+
+if(file && file.type === "application/pdf") {
+cvTextEl.value = currentLang === 'tr' ? "PDF okunuyor, lütfen bekleyin..." : "Reading PDF, please wait...";
+
+const reader = new FileReader();
+
+reader.onload = async function() {
+try {
+const typedarray = new Uint8Array(this.result);
+const pdf = await pdfjsLib.getDocument(typedarray).promise;
+let text = '';
+for (let i = 1; i <= pdf.numPages; i++) {
+const page = await pdf.getPage(i);
+const content = await page.getTextContent();
+text += content.items.map(item => item.str).join(' ') + ' ';
+}
+cvTextEl.value = text;
+} catch (err) {
+console.error("PDF İşleme Hatası:", err);
+cvTextEl.value = currentLang === 'tr' ? "Hata: PDF okunamadı. Şifreli veya bozuk olabilir. Lütfen metni kopyalayıp buraya yapıştırın." : "Error: Could not read PDF. It might be encrypted or corrupted. Please paste the text here.";
+}
+};
+
+reader.onerror = function(err) {
+console.error("Dosya Okuma Hatası:", err);
+cvTextEl.value = currentLang === 'tr' ? "Hata: Dosya yüklenirken bir sorun oluştu." : "Error: A problem occurred while uploading the file.";
+};
+
+reader.readAsArrayBuffer(file);
+}
+});
+
+// Analizi Başlat
+async function startAnalysis() {
+const cvText = document.getElementById('cvText').value.trim();
+const jobText = document.getElementById('jobText').value.trim();
+
+if (!cvText || !jobText) {
+alert(currentLang === 'tr' ? "Lütfen özgeçmiş metni ve iş ilanı alanlarını doldurun." : "Please fill in both resume and job description fields.");
+return;
+}
+
+document.getElementById('heroSection').classList.add('hidden');
+document.getElementById('inputSection').classList.add('hidden');
+document.getElementById('resultsSection').classList.add('hidden');
+document.getElementById('resultsSection').classList.remove('opacity-100', 'translate-y-0');
+document.getElementById('loadingSection').classList.remove('hidden');
+document.getElementById('loadingSection').classList.add('flex');
+
+const promptLang = currentLang === 'tr' ? "Yanıtı tamamen Türkçe ver." : "Give the response entirely in English.";
+const prompt = `
+           Bir İK uzmanı ve katı bir ATS (Aday Takip Sistemi) olarak davran. 
+           Aşağıdaki CV'yi ve İş İlanını incele. 
+           Eğer verilen metinlerden biri CV veya iş ilanı gibi durmuyorsa skoru 0 yap.
+           ${promptLang}
+           Sonucu sadece aşağıdaki formatta geçerli bir JSON olarak dön (markdown blokları kullanma):
+           {
+               "score": 85,
+               "message": "Genel değerlendirme mesajı",
+               "strengths": ["Güçlü yön 1", "Güçlü yön 2"],
+               "missing": ["Eksik kelime 1", "Eksik kelime 2"],
+               "suggestions": ["Öneri 1", "Öneri 2"],
+               "interview_questions": ["Soru 1", "Soru 2"],
+               "cover_letter": "Profesyonel ön yazı taslağı",
+               "linkedin_message": "İlana başvurduktan sonra adayın şirketin İK uzmanına LinkedIn'den gönderebileceği, adayın en güçlü özelliğini vurgulayan 50 kelimelik, akılda kalıcı tanışma mesajı. (Boşluk doldurmalı alanlar bırak: [İK Yetkilisi İsmi] gibi)",
+               "alternative_roles": ["Rol/Ünvan 1", "Rol/Ünvan 2", "Rol/Ünvan 3"]
+           }
+           CV Metni: ${cvText}
+           İş İlanı: ${jobText}
+           `;
+
+try {
+// DOĞRUDAN VERCEL ARKA PLANINA İSTEK ATIYORUZ
+const response = await fetch('/api/analyze', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ prompt: prompt })
+});
+
+if (!response.ok) {
+const errorData = await response.json();
+throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
+}
+
+const data = await response.json();
+
+let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+if (!jsonStr) {
+throw new Error("Yapay zeka yanıtı boş döndü. (Model kısıtlamasına takılmış olabilir)");
+}
+
+jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+const result = JSON.parse(jsonStr);
+
+renderResults(result);
+saveToHistory(jobText.substring(0, 25) + "...", result.score);
+
+} catch (error) {
+console.error("Sistem Hatası Detayı:", error);
+
+let msg = currentLang === 'tr' ? "Analiz sırasında bir hata oluştu.\nDetay: " : "An error occurred.\nDetail: ";
+alert(msg + error.message);
+
+resetForm();
+}
+}
+
+// Sonuçları Çiz
+function renderResults(data) {
+document.getElementById('loadingSection').classList.remove('flex');
+document.getElementById('loadingSection').classList.add('hidden');
+
+const resSec = document.getElementById('resultsSection');
+resSec.classList.remove('hidden');
+
+// Animasyon için reflow
+void resSec.offsetWidth;
+resSec.classList.remove('opacity-0', 'translate-y-4');
+resSec.classList.add('opacity-100', 'translate-y-0');
+
+// Skor Renklendirme ve Animasyonu
+const scoreEl = document.getElementById('scoreValue');
+const scoreCircle = document.getElementById('scoreCircle');
+const scoreHeading = document.getElementById('scoreHeading');
+const scoreBar = document.getElementById('scoreBar');
+
+let color = 'text-brand-500';
+let bgClass = 'bg-brand-500';
+
+if(data.score >= 80) { color = 'text-emerald-500'; bgClass = 'bg-emerald-500'; scoreHeading.innerText = currentLang==='tr'?'Mükemmel Eşleşme! 🎯':'Perfect Match! 🎯'; }
+else if(data.score >= 50) { color = 'text-amber-500'; bgClass = 'bg-amber-500'; scoreHeading.innerText = currentLang==='tr'?'Ortalama Eşleşme 👍':'Average Match 👍'; }
+else { color = 'text-rose-500'; bgClass = 'bg-rose-500'; scoreHeading.innerText = currentLang==='tr'?'Zayıf Eşleşme ⚠️':'Weak Match ⚠️'; }
+
+scoreEl.className = `z-10 text-6xl tracking-tighter ${color}`;
+scoreBar.className = `absolute left-0 top-0 w-2 h-full ${bgClass}`;
+
+// Sayı sayma animasyonu
+let current = 0;
+const timer = setInterval(() => {
+current += 2;
+if(current >= data.score) { current = data.score; clearInterval(timer); }
+scoreEl.innerText = current;
+// scoreCircle.style.background = `conic-gradient(${bgClass.replace('bg-','var(--tw-colors-')} ${current}%, #f1f5f9 0)`; // Opsiyonel Conic Gradient
+}, 20);
+
+document.getElementById('scoreMessage').innerText = data.message;
+
+// Listeler
+const fillList = (id, items, icon, iconColor) => {
+document.getElementById(id).innerHTML = items.map(i => `
+                   <li class="flex items-start gap-2">
+                       <i class="fa-solid ${icon} ${iconColor} mt-1 text-[10px]"></i>
+                       <span>${i}</span>
+                   </li>
+               `).join('');
+};
+
+fillList('strengthsList', data.strengths, 'fa-circle-check', 'text-emerald-400');
+fillList('suggestionsList', data.suggestions, 'fa-arrow-right', 'text-brand-400');
+
+// Eksik kelimeleri badge olarak göster
+document.getElementById('missingList').innerHTML = data.missing.length > 0 
+? data.missing.map(m => `<span class="bg-white border border-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-sm font-bold shadow-sm">${m}</span>`).join('')
+: `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i> ${currentLang==='tr'?'Önemli bir eksik bulunmadı.':'No major keywords missing.'}</span>`;
+
+// Mülakat
+document.getElementById('interviewQuestions').innerHTML = data.interview_questions.map((q, idx) => `
+               <div class="bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-700">
+                   <span class="text-amber-500 text-xs font-bold uppercase tracking-widest block mb-1">Soru ${idx+1}</span>
+                   <p class="font-medium text-slate-200 text-sm sm:text-base leading-relaxed">${q}</p>
+               </div>
+           `).join('');
+
+// Ön Yazı, LinkedIn ve Kariyer Pusulası
+document.getElementById('coverLetterText').innerText = data.cover_letter;
+document.getElementById('linkedinMessageText').innerText = data.linkedin_message;
+
+document.getElementById('alternativeRolesList').innerHTML = data.alternative_roles.map(role => `
+               <li class="flex items-center gap-3 bg-white p-3 rounded-xl border border-fuchsia-100 shadow-sm">
+                   <div class="w-2 h-2 rounded-full bg-fuchsia-400"></div>
+                   <span class="font-bold text-slate-700 text-sm">${role}</span>
+               </li>
+           `).join('');
+}
+
+// Yeni Analiz Butonu
+function resetForm() {
+document.getElementById('resultsSection').classList.add('hidden', 'opacity-0');
+document.getElementById('heroSection').classList.remove('hidden');
+document.getElementById('inputSection').classList.remove('hidden');
+document.getElementById('loadingSection').classList.remove('flex');
+document.getElementById('loadingSection').classList.add('hidden');
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Evrensel Kopyalama Fonksiyonu
+function copyText(elementId, btn) {
+const text = document.getElementById(elementId).innerText;
+navigator.clipboard.writeText(text).then(() => {
+const originalHtml = btn.innerHTML;
+btn.innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> Alındı`;
+setTimeout(() => btn.innerHTML = originalHtml, 2000);
+});
+}
+
+// AI CV Sihirbazı (Cümle İyileştirme)
+async function optimizeSentence() {
+const input = document.getElementById('weakSentence').value.trim();
+if (!input) {
+alert(currentLang === 'tr' ? "Lütfen iyileştirilecek bir cümle yazın." : "Please enter a sentence to optimize.");
+return;
+}
+
+const btn = document.getElementById('btnOptimize');
+const originalText = btn.innerText;
+btn.innerText = currentLang === 'tr' ? "Yazılıyor..." : "Rewriting...";
+document.getElementById('optimizedResult').classList.add('hidden');
+
+const prompt = currentLang === 'tr' 
+? `Adayın CV'sindeki şu cümleyi incele: "${input}". Bunu İK uzmanlarını etkileyecek, "STAR" (Durum, Görev, Eylem, Sonuç) metoduna uygun 3 farklı güçlü alternatife dönüştür. Lütfen sadece 3 elemanlı bir JSON string dizisi olarak dön: ["Alt 1", "Alt 2", "Alt 3"]. (Markdown veya başka metin ekleme)`
+: `Analyze this sentence from a candidate's CV: "${input}". Rewrite it into 3 powerful alternatives using the STAR (Situation, Task, Action, Result) method to impress HR professionals. Please return strictly as a JSON array of 3 strings: ["Alt 1", "Alt 2", "Alt 3"]. (No markdown, no extra text)`;
+
+try {
+// SİHİRBAZ İÇİN DE VERCEL API KULLANILIYOR
+const response = await fetch('/api/analyze', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ prompt: prompt })
+});
+
+if (!response.ok) {
+const errorData = await response.json();
+throw new Error(errorData.error || `HTTP Hata Kodu: ${response.status}`);
+}
+
+const data = await response.json();
+
+let jsonStr = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+if (!jsonStr) {
+throw new Error("Yapay zeka yanıtı boş döndü.");
+}
+
+jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
+const resultList = JSON.parse(jsonStr);
+
+const resultDiv = document.getElementById('optimizedResult');
+resultDiv.innerHTML = resultList.map(line => `
+                   <div class="flex items-start gap-3 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50 shadow-sm">
+                       <div class="text-indigo-400 mt-0.5"><i class="fa-solid fa-check-double"></i></div>
+                       <p class="font-medium leading-relaxed">${line}</p>
+                   </div>
+               `).join('');
+
+resultDiv.classList.remove('hidden');
+btn.innerText = originalText;
+
+} catch (error) {
+console.error("Analiz Detaylı Hata:", error);
+alert((currentLang === 'tr' ? "Analiz sırasında hata: " : "Error during analysis: ") + error.message);
+btn.innerText = originalText;
+
+} finally {
+document.getElementById('loadingSection').classList.add('hidden');
+}
+}
+
+// Geçmiş Yönetimi (History Sidebar)
+function saveToHistory(title, score) {
+let history = JSON.parse(localStorage.getItem('atsCheckHistory')) || [];
+const date = new Date().toLocaleDateString();
+history.unshift({ title, score, date });
+if (history.length > 10) history.pop();
+localStorage.setItem('atsCheckHistory', JSON.stringify(history));
+renderHistory();
+}
+
+function renderHistory() {
+const history = JSON.parse(localStorage.getItem('atsCheckHistory')) || [];
+const container = document.getElementById('historyList');
+if (history.length === 0) {
+container.innerHTML = `<div class="text-center py-10 opacity-50"><i class="fa-regular fa-folder-open text-3xl mb-2"></i><p class="text-sm font-medium">Kayıt bulunamadı.</p></div>`;
+return;
+}
+container.innerHTML = history.map(item => {
+let badgeColor = 'bg-brand-100 text-brand-700';
+if(item.score >= 80) badgeColor = 'bg-emerald-100 text-emerald-700';
+else if(item.score < 50) badgeColor = 'bg-rose-100 text-rose-700';
+
+return `
+               <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-center group cursor-default hover:border-brand-200 transition">
+                   <div class="overflow-hidden">
+                       <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${item.date}</p>
+                       <p class="text-sm font-bold text-slate-700 truncate w-44 font-sans">${item.title}</p>
+                   </div>
+                   <div class="${badgeColor} font-extrabold px-3 py-1.5 rounded-xl text-sm font-sans flex items-center gap-1 shadow-sm">
+                       ${item.score}<span class="text-[10px] opacity-70">%</span>
+                   </div>
+               </div>
+           `}).join('');
+}
+
+function toggleHistory() {
+const sidebar = document.getElementById('historySidebar');
+if (sidebar.classList.contains('sidebar-closed')) {
+renderHistory();
+sidebar.classList.remove('sidebar-closed');
+sidebar.classList.add('sidebar-open');
+} else {
+sidebar.classList.add('sidebar-closed');
+sidebar.classList.remove('sidebar-open');
+}
+}
+
+// Modal (Açılır Pencere) Yönetimi
+function openModal(id) {
+const modal = document.getElementById(id);
+const content = modal.children[0];
+modal.classList.remove('hidden');
+// Animasyon için reflow
+void modal.offsetWidth;
+content.classList.remove('scale-95', 'opacity-0');
+content.classList.add('scale-100', 'opacity-100');
+}
+
+function closeModal(id) {
+const modal = document.getElementById(id);
+const content = modal.children[0];
+content.classList.remove('scale-100', 'opacity-100');
+content.classList.add('scale-95', 'opacity-0');
+setTimeout(() => modal.classList.add('hidden'), 300);
+}
+
+</script>
 </body>
 </html>
