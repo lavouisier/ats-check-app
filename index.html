@@ -393,27 +393,49 @@
 
     <!-- Modallar -->
     <!-- 1. Nasıl Çalışır Modalı -->
-    <div id="howItWorksModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
-        <div class="glass-modal w-full max-w-md rounded-3xl p-8 transform scale-95 opacity-0 transition-all duration-300" id="howItWorksContent">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-extrabold font-sans text-slate-800">Sistem Nasıl Çalışır?</h3>
-                <button onclick="closeModal('howItWorksModal')" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-rose-100 hover:text-rose-600 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="space-y-6 text-sm text-slate-600 font-medium">
-                <div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">1</div><p class="leading-relaxed">PDF formatındaki CV'nizi yükleyin veya içeriğini metin olarak yapıştırın.</p></div>
-                <div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">2</div><p class="leading-relaxed">Başvuracağınız iş ilanının tam metnini kopyalayıp ilgili alana yapıştırın.</p></div>
-                <div class="flex gap-4 items-start"><div class="bg-brand-100 text-brand-600 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 mt-0.5">3</div><p class="leading-relaxed">Yapay zeka (Gemini AI) her iki metni okur, kurumsal İK algoritmalarını simüle ederek eksiklerinizi ve size özel ön yazıyı hazırlar.</p></div>
-            </div>
-            <button onclick="closeModal('coffeeModal')" class="absolute top-4 right-4 text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="text-4xl mb-4">☕</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Desteğiniz İçin Teşekkürler!</h3>
-            <p class="text-sm text-gray-600 mb-6">Bu aracı ücretsiz ve reklamsız tutabilmek için bağışlarınıza güveniyoruz. Destek olmak için güvenli ödeme sayfasına (Shopier/BuyMeACoffee) yönlendirileceksiniz.</p>
+<!-- Nasıl Çalışır Modalı -->
+<div id="howItWorksModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300 relative">
+        
+        <!-- Tek ve Çalışan Çarpı Butonu -->
+        <button onclick="closeModal('howItWorksModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="p-6 sm:p-8">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 pr-8">Sistem Nasıl Çalışır?</h3>
             
-            <!-- BAĞIŞ LİNKİNİZİ BURAYA EKLEYİN -->
-            <button type="button" onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="block w-full bg-[#FFDD00] hover:bg-[#ffea4d] text-gray-900 font-bold py-3 rounded-xl transition shadow-sm mb-2 text-center cursor-pointer relative z-50">☕ Destek Ol</button>
-            <button onclick="closeModal('coffeeModal')" class="text-sm text-gray-500 hover:text-gray-800 mt-2">Belki Daha Sonra</button>
+            <div class="space-y-4 text-sm text-slate-600">
+                <div class="flex gap-3">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">1</span>
+                    <p>PDF formatındaki CV'nizi yükleyin veya içeriğini metin olarak yapıştırın.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">2</span>
+                    <p>Başvuracağınız iş ilanının tam metnini kopyalayıp ilgili alana yapıştırın.</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">3</span>
+                    <p>Yapay zeka her iki metni okur, kurumsal İK algoritmalarını simüle ederek eksiklerinizi raporlar.</p>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-slate-50 p-5 rounded-xl border border-slate-100 text-center">
+                <h4 class="font-bold text-slate-800 mb-2">Desteğiniz İçin Teşekkürler!</h4>
+                <p class="text-xs text-slate-500 mb-4">Bu aracı ücretsiz ve reklamsız tutabilmek için desteklerinize güveniyoruz.</p>
+                
+                <button onclick="window.open('https://buymeacoffee.com/Lavos', '_blank')" class="w-full bg-[#FFDD00] hover:bg-[#ffea4d] text-gray-900 font-bold py-3 rounded-xl transition shadow-sm mb-3">
+                    ☕ Destek Ol
+                </button>
+                
+                <!-- Çalışan "Belki Daha Sonra" Butonu -->
+                <button onclick="closeModal('howItWorksModal')" class="text-xs text-slate-400 hover:text-slate-600 font-medium cursor-pointer transition-colors block w-full text-center">
+                    Belki Daha Sonra
+                </button>
+            </div>
         </div>
     </div>
+</div>v
 
     <script>
         // ARTIK API KEY BURADA YOK (GÜVENLİK İÇİN)!
