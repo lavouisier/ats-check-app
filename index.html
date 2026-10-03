@@ -544,7 +544,7 @@ if(document.getElementById('resCompassTitle')) document.getElementById('resCompa
 if(document.getElementById('resCompassDesc')) document.getElementById('resCompassDesc').innerText = t.compassDesc;
 
     // Dinamik Dil Çevirileri (Hata Önleyici Güvenli Yapı)
-    const currentSelection = this.value; // 'en' veya 'tr'
+    const currentSelection = currentLang;
 
     const elementsToTranslate = {
         btnHowItWorks: { en: "How it Works?", tr: "Nasıl Çalışır?" },
