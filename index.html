@@ -40,25 +40,47 @@ boxShadow: {
 }
 </script>
 <style>
-  @media print {
+@media print {
     /* Yazdırma sırasında gereksiz butonları ve menüyü gizle */
     .no-print, button, nav {
         display: none !important;
     }
     
-    /* Sayfa yapısını A4'e sabitle ve arka planı temizle */
     body {
         background: white !important;
         color: black !important;
     }
     
-    /* Rapor kutusunun sayfaya tam oturmasını sağla */
+    /* Ana Rapor Kutusunu Daralt ve Kağıda Sığdır */
     #resultContent {
         width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-        box-shadow: none !important;
     }
+    
+    /* İÇERİDEKİ TÜM YAZILARI VE BOŞLUKLARI ZORLA KÜÇÜLTEN KOD */
+    #resultContent * {
+        font-size: 10pt !important; /* Tüm metinleri A4 formatına küçült */
+        line-height: 1.3 !important; /* Satır aralarını daralt */
+        padding: 4px !important; /* Tasarımdaki devasa kutu iç boşluklarını ez */
+        margin-bottom: 6px !important; /* Paragraf arası boşlukları küçült */
+        box-shadow: none !important; /* Kağıtta mürekkep yakan gölgeleri kaldır */
+    }
+    
+    /* Başlıkların biraz daha belirgin kalmasını sağla */
+    #resultContent h1, #resultContent h2, #resultContent h3, #resultContent h4 {
+        font-size: 13pt !important;
+        font-weight: bold !important;
+        margin-top: 10px !important;
+        border: none !important;
+    }
+    
+    /* Yazıların ve kutuların ortadan ikiye kesilmesini engelle */
+    div, section, p, li, ul {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+}
     
     /* Yazıların ve kutuların ortadan ikiye kesilmesini engelle */
     div, section, p, li {
