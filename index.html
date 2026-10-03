@@ -65,6 +65,22 @@ boxShadow: {
         padding: 4px !important; /* Tasarımdaki devasa kutu iç boşluklarını ez */
         margin-bottom: 6px !important; /* Paragraf arası boşlukları küçült */
         box-shadow: none !important; /* Kağıtta mürekkep yakan gölgeleri kaldır */
+
+        /* Kutuların yan yana sıkışıp yazıları ezmesini engelle ve alt alta sırala */
+    #resultContent .grid, 
+    #resultContent .sm\:grid-cols-2,
+    #resultContent .md\:grid-cols-2,
+    #resultContent .lg\:grid-cols-3 {
+        display: block !important;
+    }
+    
+    /* Her bir kutunun kağıdın tüm genişliğini (tam satır) kullanmasını sağla */
+    #resultContent .grid > div {
+        width: 100% !important;
+        margin-bottom: 15px !important;
+        display: block !important;
+        page-break-inside: avoid !important;
+    }
     }
     
     /* Başlıkların biraz daha belirgin kalmasını sağla */
