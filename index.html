@@ -542,6 +542,35 @@ if(document.getElementById('resLinkedinTitle')) document.getElementById('resLink
 if(document.getElementById('resLinkedinDesc')) document.getElementById('resLinkedinDesc').innerText = t.linkedinDesc;
 if(document.getElementById('resCompassTitle')) document.getElementById('resCompassTitle').innerText = t.compassTitle;
 if(document.getElementById('resCompassDesc')) document.getElementById('resCompassDesc').innerText = t.compassDesc;
+
+    // Dinamik Dil Çevirileri (Hata Önleyici Güvenli Yapı)
+    const currentSelection = this.value; // 'en' veya 'tr'
+
+    const elementsToTranslate = {
+        btnHowItWorks: { en: "How it Works?", tr: "Nasıl Çalışır?" },
+        navHistory: { en: "History", tr: "Geçmiş" },
+        cvText: { 
+            prop: 'placeholder', 
+            en: "If you cannot upload a PDF, you can copy and paste the text from your CV here...", 
+            tr: "Eğer PDF yükleyemiyorsanız, CV'nizdeki yazıları kopyalayıp buraya yapıştırabilirsiniz..." 
+        },
+        jobDescription: { 
+            prop: 'placeholder', 
+            en: "Paste the details of the position you want to apply for (Required qualifications, job description, etc.) here...", 
+            tr: "Başvurmak istediğiniz pozisyonun detaylarını (Aranan nitelikler, iş tanımı vb.) buraya yapıştırın..." 
+        }
+    };
+
+    for (const [id, data] of Object.entries(elementsToTranslate)) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (data.prop === 'placeholder') {
+                el.placeholder = data[currentSelection];
+            } else {
+                el.innerText = data[currentSelection];
+            }
+        }
+    }
 });
 
 // Sürükle ve Bırak (Drag & Drop) ve Dosya Seçimi İşlemleri
